@@ -1,0 +1,8 @@
+GENERAL NOTES
+
+Render Backend Utility library that provides high level render data structure
+and functions relying on top of the render backend library.
+
+LICENSE 
+
+The code is released under the BSD license.
