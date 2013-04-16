@@ -144,7 +144,7 @@ rbu_init_circle
     /* fill vertex data. */
     coord_id = 0;
     for(point_id = 0; point_id < npoints; ++point_id) {
-      const float angle = (float)point_id * rcp_npoints * 2 * PI;
+      const float angle = (float)point_id * rcp_npoints * 2.f * (float)PI;
       vertices[coord_id] = pos[0] + cosf(angle) * radius;
       ++coord_id;
       vertices[coord_id] = pos[1] + sinf(angle) * radius;
@@ -331,7 +331,7 @@ rbu_init_cylinder
     i = 0;
 
     for(slice_id = 0; slice_id < nslices; ++slice_id) {
-      const float angle = (float)slice_id * rcp_nslices * 2 * PI;
+      const float angle = (float)slice_id * rcp_nslices * 2.0f * (float)PI;
       const float sina = sinf(angle);
       const float cosa = cosf(angle);
       /* top */
@@ -360,7 +360,7 @@ rbu_init_cylinder
   /* index buffer */
   {
     unsigned int indices[4*nslices - 2];
-    size_t index_id = 0;
+    unsigned int index_id = 0;
     const unsigned int two_nslices = 2 * nslices;
     memset(&indices, 0, sizeof(indices));
     memset(&buf_desc, 0, sizeof(buf_desc));
@@ -440,9 +440,10 @@ rbu_draw_geometry(struct rbu_geometry* geom)
   RBI(geom->rbi, bind_vertex_array(geom->ctxt, geom->vertex_array));
   if(geom->index_buffer) {
     RBI(geom->rbi, draw_indexed
-      (geom->ctxt, geom->primitive_type, geom->nb_vertices));
+      (geom->ctxt, geom->primitive_type, (unsigned int)geom->nb_vertices));
   } else {
-    RBI(geom->rbi, draw(geom->ctxt, geom->primitive_type, geom->nb_vertices));
+    RBI(geom->rbi, draw
+      (geom->ctxt, geom->primitive_type, (unsigned int)geom->nb_vertices));
   }
   RBI(geom->rbi, bind_vertex_array(geom->ctxt, NULL));
   return 0;
